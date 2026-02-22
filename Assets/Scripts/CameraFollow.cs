@@ -10,16 +10,16 @@ public class CameraFollow : MonoBehaviour
     {
         if (target == null) return;
 
-        // 目標位置を計算
-        Vector3 desiredPosition = target.position + offset;
+        Vector3 desiredPosition = new Vector3(
+            target.position.x + offset.x,
+            target.position.y + offset.y,
+            offset.z
+        );
 
-        // なめらかに追従
-        Vector3 smoothedPosition = Vector3.Lerp(
+        transform.position = Vector3.Lerp(
             transform.position,
             desiredPosition,
             smoothSpeed * Time.deltaTime
         );
-
-        transform.position = smoothedPosition;
     }
 }

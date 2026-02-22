@@ -4,10 +4,15 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
+    private Rigidbody2D rb;
 
-    void Update()
+    void Start()
     {
-        // キーボード入力を取得
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+    void FixedUpdate()
+    {
         Vector2 input = Vector2.zero;
 
         if (Keyboard.current.wKey.isPressed || Keyboard.current.upArrowKey.isPressed)
@@ -19,8 +24,6 @@ public class PlayerController : MonoBehaviour
         if (Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed)
             input.x += 1f;
 
-        // 移動を適用
-        Vector3 movement = new Vector3(input.x, input.y, 0f);
-        transform.position += movement * moveSpeed * Time.deltaTime;
+        rb.linearVelocity = input.normalized * moveSpeed;
     }
 }
