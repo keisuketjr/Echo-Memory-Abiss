@@ -1,18 +1,28 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Yarn.Unity;
 
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
     private Rigidbody2D rb;
+    private DialogueRunner dialogueRunner;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        dialogueRunner = FindObjectOfType<DialogueRunner>();
     }
 
     void FixedUpdate()
     {
+        // 会話中は動かない
+        if (dialogueRunner != null && dialogueRunner.IsDialogueRunning)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
         Vector2 input = Vector2.zero;
 
         if (Keyboard.current.wKey.isPressed || Keyboard.current.upArrowKey.isPressed)
