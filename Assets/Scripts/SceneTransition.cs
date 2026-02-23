@@ -8,7 +8,6 @@ public class SceneTransition : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // Echoが触れたら遷移する
         if (other.gameObject.name == "Echo")
         {
             // スポーン位置を保存
@@ -16,8 +15,15 @@ public class SceneTransition : MonoBehaviour
             PlayerPrefs.SetFloat("SpawnY", playerSpawnPosition.y);
             PlayerPrefs.Save();
 
-            // Sceneを読み込む
-            SceneManager.LoadScene(targetScene);
+            // FadeManagerを経由してScene遷移
+            if (FadeManager.Instance != null)
+            {
+                FadeManager.Instance.FadeToScene(targetScene);
+            }
+            else
+            {
+                SceneManager.LoadScene(targetScene);
+            }
         }
     }
 }
