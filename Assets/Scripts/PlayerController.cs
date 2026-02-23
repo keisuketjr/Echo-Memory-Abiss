@@ -7,11 +7,13 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 5f;
     private Rigidbody2D rb;
     private DialogueRunner dialogueRunner;
+    private Animator animator;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         dialogueRunner = FindObjectOfType<DialogueRunner>();
+        animator = GetComponent<Animator>();
     }
 
     void FixedUpdate()
@@ -20,6 +22,7 @@ public class PlayerController : MonoBehaviour
         if (dialogueRunner != null && dialogueRunner.IsDialogueRunning)
         {
             rb.linearVelocity = Vector2.zero;
+            animator.SetBool("IsMoving", false);
             return;
         }
 
@@ -35,5 +38,17 @@ public class PlayerController : MonoBehaviour
             input.x += 1f;
 
         rb.linearVelocity = input.normalized * moveSpeed;
+
+        // アニメーションパラメーターを更新
+        if (input != Vector2.zero)
+        {
+            animator.SetBool("IsMoving", true);
+            animator.SetFloat("MoveX", input.x);
+            animator.SetFloat("MoveY", input.y);
+        }
+        else
+        {
+            animator.SetBool("IsMoving", false);
+        }
     }
 }
