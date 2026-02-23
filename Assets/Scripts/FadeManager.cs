@@ -35,13 +35,15 @@ public class FadeManager : MonoBehaviour
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvas.sortingOrder = 100;
         canvasObj.AddComponent<UnityEngine.UI.CanvasScaler>();
-        canvasObj.AddComponent<UnityEngine.UI.GraphicRaycaster>();
+
+        // GraphicRaycasterは追加しない（ボタンクリックを妨げないため）
 
         // FadePanel を作成
         GameObject panelObj = new GameObject("FadePanel");
         panelObj.transform.SetParent(canvasObj.transform, false);
         fadePanel = panelObj.AddComponent<Image>();
         fadePanel.color = new Color(0f, 0f, 0f, 0f);
+        fadePanel.raycastTarget = false; // クリックを透過する
 
         // 画面全体に広げる
         RectTransform rect = panelObj.GetComponent<RectTransform>();
