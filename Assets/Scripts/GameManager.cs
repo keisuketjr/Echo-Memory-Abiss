@@ -29,6 +29,13 @@ public class GameManager : MonoBehaviour
     {
         player = GameObject.Find("Echo");
 
+        // 新規スタートの場合はロードしない
+        if (PlayerPrefs.GetInt("IsNewGame", 1) == 1)
+        {
+            PlayerPrefs.SetInt("IsNewGame", 0);
+            return;
+        }
+
         // セーブデータがあればロードする
         if (SaveManager.Instance != null && SaveManager.Instance.HasSaveData())
         {
@@ -37,7 +44,6 @@ public class GameManager : MonoBehaviour
             {
                 fragBond = data.fragBond;
 
-                // 保存されたSceneと現在のSceneが同じなら位置を復元
                 if (data.currentScene == SceneManager.GetActiveScene().name)
                 {
                     player.transform.position = new Vector3(data.playerX, data.playerY, 0f);
